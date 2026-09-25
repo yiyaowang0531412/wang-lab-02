@@ -13,4 +13,41 @@ execute:
     warning: false
 ---
 
+```{r, load libraries}
+#| output: FALSE
+library(tidyverse)
+library(readxl)
+library(psych)
+library(gt)
+library(janitor)
+```
 
+```{r, load data}
+#| output: FALSE
+#loading data
+data<-read_excel("./Attachment_Anxiety_Data.xlsx")
+
+# inspecting data
+head(data)
+```
+
+```{r, clean data}
+#| output: FALSE
+data.clean <- data |>
+  mutate(Gender = case_when(
+    Gender == 1 ~ "Male",
+    Gender == 2 ~ "Female",
+    TRUE ~ NA
+  )) |>
+  mutate(`Age group` = case_when(
+    `Age group` == 1 ~ "18-24",
+    `Age group` == 2 ~ "24-34",
+    `Age group` == 3 ~ "35-44",
+    `Age group` == 4 ~ "45-54",
+    `Age group` == 5 ~ "55-64",
+    TRUE ~ NA
+  )) |>
+  mutate_at(7:45, as.integer)
+
+
+```
