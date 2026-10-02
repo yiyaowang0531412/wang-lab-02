@@ -1,7 +1,7 @@
 ---
 title: "9041 Assignment 2"
-author: Selena Esteves
-date: today
+author: Yiyao Wang
+date: 2026-10-01
 format: 
     html:
       toc: true
@@ -24,7 +24,7 @@ library(janitor)
 
 ```{r, load data}
 #| output: FALSE
-#loading data
+# loading data
 data<-read_excel("./Attachment_Anxiety_Data.xlsx")
 
 # inspecting data
@@ -33,6 +33,8 @@ head(data)
 
 ```{r, clean data}
 #| output: FALSE
+
+# clean data 
 data.clean <- data |>
   mutate(Gender = case_when(
     Gender == 1 ~ "Male",
@@ -51,3 +53,187 @@ data.clean <- data |>
 
 
 ```
+
+```{r, coding the scales}
+#| output: FALSE
+SA_key <- list(
+  Social_Anxiety = c(
+    1, 2, 3, 4, -5, 6, 7, 8, -9, 10, -11,
+    12, 13, 14, 15, 16, 17, 18, 19, 20
+  )
+)
+
+AA_key <- list(
+  Attachment_Anxiety = c(
+    1, 2, 3, 4, 5, 6, 7, 8, 9
+  )
+)
+
+SEst_key <- list(
+  Self_Esteem = c(
+    1, -2, 3, 4, -5, -6, 7, -8, -9, 10
+  )
+)
+
+# social interaction anxiety scale
+scores_SA <- scoreItems(
+  SA_key,
+  data.clean[, paste0("SA_", 1:20)],
+  min = 0,
+  max = 4
+)
+
+scores_SA.df <- as.data.frame(scores_SA$scores)
+
+
+# attachment anxiety scale
+scores_AA <- scoreItems(
+  AA_key,
+  data.clean[, paste0("AA_", 1:9)],
+  min = 1,
+  max = 7
+)
+
+scores_AA.df <- as.data.frame(scores_AA$scores)
+
+# rosenberg self-Esteem scale
+scores_SEst <- scoreItems(
+  SEst_key,
+  data.clean[, paste0("SEst_", 1:10)],
+  min = 1,
+  max = 4
+)
+
+scores_SEst.df <- as.data.frame(scores_SEst$scores)
+
+allscores.df <- cbind(
+  scores_SA.df,
+  scores_AA.df,
+  scores_SEst.df
+)
+
+combined.df <- cbind(data.clean, allscores.df)
+
+final.df <- combined.df |>
+  select(Gender, `Age group`,
+         Social_Anxiety,
+         Attachment_Anxiety,
+         Self_Esteem)
+
+```
+
+```{r, demographic table}
+#| output: FALSE
+
+demographic.table <- final.df |>
+  tabyl(Gender, `Age group`)
+
+demographic.gt <- demographic.table |>
+  gt() |>
+  tab_header(
+    title = "Participant Demographics"
+  )
+
+demographic.gt
+```
+
+```{r, alpha value table}
+#| output: FALSE
+
+summary <- final.df |>
+  select(Social_Anxiety, Attachment_Anxiety, Self_Esteem) |>
+  describe()
+
+sample_size <- nrow(final.df)
+
+summary$Scales <- rownames(summary)
+
+alphas <- round(c(
+  scores_SA$alpha,
+  scores_AA$alpha,
+  scores_SEst$alpha
+), 2)
+
+summary <- summary |>
+  select(Scales, mean, median, sd, range)
+
+summary <- cbind(summary, Alpha = alphas)
+
+
+score.table <- summary |>
+  gt() |>
+  tab_header(
+    title = "Summary Statistics for Psychological Scales"
+  )
+score.table
+
+```
+
+```{r, filter my data}
+#| output: FALSE
+filtered.df <- final.df |>
+  filter(Gender == "Male")
+
+# summary statistics for male participants
+summary_filtered <- filtered.df |>
+  select(Social_Anxiety, Attachment_Anxiety, Self_Esteem) |>
+  describe()
+
+# sample size
+sample_size_filtered <- nrow(filtered.df)
+
+# add scale names
+summary_filtered$Scales <- rownames(summary_filtered)
+
+# keep required columns
+summary_filtered <- summary_filtered |>
+  select(Scales, mean, median, sd, range)
+
+# use the alpha values calculated previously
+alphas_filtered <- alphas
+
+# combine summary statistics and alpha
+filtered.reptable <- cbind(summary_filtered, Alpha = alphas_filtered)
+
+# create gt table
+filtered.score.table <- filtered.reptable |>
+  gt() |>
+  tab_header(
+    title = "Summary Statistics for Male Participants"
+  )
+
+filtered.score.table
+```
+
+
+## Intro
+The purpose of this analysis was to examine participants’ social interaction anxiety, attachment anxiety, and self-esteem using psychological survey data. The data were cleaned and scored in R. Descriptive statistics and internal consistency estimates were calculated for each psychological scale, and an additional analysis was conducted for male participants.
+
+## Methods
+
+### Participants
+The dataset contained `{r} sample_size` participants. Participant gender and age group were used to describe the demographic composition of the sample. The distribution of participants across these demographic categories is shown below.
+`{r} demographic.gt`
+
+### Measures
+Social Interaction Anxiety. Social interaction anxiety was measured using the Social Interaction Anxiety Scale. Items 5, 9, and 11 were reverse-keyed prior to calculating participants’ average scale scores. The scale demonstrated an internal consistency of α = `{r} alphas[1]`.
+
+Attachment Anxiety. Attachment anxiety was measured using the Experiences in Close Relationships Anxiety Subscale. Participants’ responses were averaged to produce an attachment anxiety score. The scale demonstrated an internal consistency of α = `{r} alphas[2]`.
+
+Self-Esteem. Self-esteem was measured using the Rosenberg Self-Esteem Scale. Items 2, 5, 6, 8, and 9 were reverse-keyed prior to calculating participants’ average scale scores. The scale demonstrated an internal consistency of α = `{r} alphas[3]`.
+
+### Data Analysis Strategy
+Survey responses were cleaned and demographic variables were assigned informative labels prior to analysis. Scale scores were calculated separately for social interaction anxiety, attachment anxiety, and self-esteem using scoreItems(). Reverse-keyed items were specified when scoring the Social Interaction Anxiety Scale and Rosenberg Self-Esteem Scale. Average scores and Cronbach’s alpha values were then calculated for each scale. Descriptive statistics were calculated for the full sample and subsequently for a filtered dataset containing only male participants.
+
+## Results
+Descriptive statistics for social interaction anxiety, attachment anxiety, and self-esteem in the full sample are presented below.
+
+`{r} score.table`
+
+Across the full sample, the mean social interaction anxiety score was `{r} round(summary$mean[summary$Scales == "Social_Anxiety"], 2)`, the mean attachment anxiety score was `{r} round(summary$mean[summary$Scales == "Attachment_Anxiety"], 2)`, and the mean self-esteem score was `{r} round(summary$mean[summary$Scales == "Self_Esteem"], 2)`.
+
+To examine a subset of the data, the sample was filtered to include only male participants. The filtered sample contained `{r} sample_size_filtered` participants. Descriptive statistics for this group are presented below.
+
+`{r} filtered.score.table`
+
+Among male participants, the mean social interaction anxiety score was`{r} round(summary_filtered$mean[summary_filtered$Scales == "Social_Anxiety"], 2)`  , the mean attachment anxiety score was `{r} round(summary_filtered$mean[summary_filtered$Scales == "Attachment_Anxiety"], 2)`, and the mean self-esteem score was `{r} round(summary_filtered$mean[summary_filtered$Scales == "Self_Esteem"], 2)`.

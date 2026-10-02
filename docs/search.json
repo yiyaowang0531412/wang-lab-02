@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "9041 Assignment 2",
+    "section": "",
+    "text": "The purpose of this analysis was to examine participants’ social interaction anxiety, attachment anxiety, and self-esteem using psychological survey data. The data were cleaned and scored in R. Descriptive statistics and internal consistency estimates were calculated for each psychological scale, and an additional analysis was conducted for male participants."
+  },
+  {
+    "objectID": "index.html#intro",
+    "href": "index.html#intro",
+    "title": "9041 Assignment 2",
+    "section": "",
+    "text": "The purpose of this analysis was to examine participants’ social interaction anxiety, attachment anxiety, and self-esteem using psychological survey data. The data were cleaned and scored in R. Descriptive statistics and internal consistency estimates were calculated for each psychological scale, and an additional analysis was conducted for male participants."
+  },
+  {
+    "objectID": "index.html#methods",
+    "href": "index.html#methods",
+    "title": "9041 Assignment 2",
+    "section": "Methods",
+    "text": "Methods\n\nParticipants\nThe dataset contained 63 participants. Participant gender and age group were used to describe the demographic composition of the sample. The distribution of participants across these demographic categories is shown below.\n\n\n\n\n\n\nParticipant Demographics\n\n\nGender\n18-24\n24-34\n35-44\n45-54\n55-64\n\n\n\n\nFemale\n35\n9\n3\n1\n2\n\n\nMale\n9\n3\n0\n0\n1\n\n\n\n\n\n\n\nMeasures\nSocial Interaction Anxiety. Social interaction anxiety was measured using the Social Interaction Anxiety Scale. Items 5, 9, and 11 were reverse-keyed prior to calculating participants’ average scale scores. The scale demonstrated an internal consistency of α = 0.9.\nAttachment Anxiety. Attachment anxiety was measured using the Experiences in Close Relationships Anxiety Subscale. Participants’ responses were averaged to produce an attachment anxiety score. The scale demonstrated an internal consistency of α = 0.94.\nSelf-Esteem. Self-esteem was measured using the Rosenberg Self-Esteem Scale. Items 2, 5, 6, 8, and 9 were reverse-keyed prior to calculating participants’ average scale scores. The scale demonstrated an internal consistency of α = 0.85.\n\n\nData Analysis Strategy\nSurvey responses were cleaned and demographic variables were assigned informative labels prior to analysis. Scale scores were calculated separately for social interaction anxiety, attachment anxiety, and self-esteem using scoreItems(). Reverse-keyed items were specified when scoring the Social Interaction Anxiety Scale and Rosenberg Self-Esteem Scale. Average scores and Cronbach’s alpha values were then calculated for each scale. Descriptive statistics were calculated for the full sample and subsequently for a filtered dataset containing only male participants."
+  },
+  {
+    "objectID": "index.html#results",
+    "href": "index.html#results",
+    "title": "9041 Assignment 2",
+    "section": "Results",
+    "text": "Results\nDescriptive statistics for social interaction anxiety, attachment anxiety, and self-esteem in the full sample are presented below.\n\n\n\n\n\n\nSummary Statistics for Psychological Scales\n\n\nScales\nmean\nmedian\nsd\nrange\nAlpha\n\n\n\n\nSocial_Anxiety\n2.388889\n2.300000\n0.6987572\n3.000000\n0.90\n\n\nAttachment_Anxiety\n3.398589\n3.111111\n1.6209543\n5.888889\n0.94\n\n\nSelf_Esteem\n2.234921\n2.200000\n0.5074156\n2.200000\n0.85\n\n\n\n\n\nAcross the full sample, the mean social interaction anxiety score was 2.39, the mean attachment anxiety score was 3.4, and the mean self-esteem score was 2.23.\nTo examine a subset of the data, the sample was filtered to include only male participants. The filtered sample contained 13 participants. Descriptive statistics for this group are presented below.\n\n\n\n\n\n\nSummary Statistics for Male Participants\n\n\nScales\nmean\nmedian\nsd\nrange\nAlpha\n\n\n\n\nSocial_Anxiety\n2.207692\n2.050000\n0.5950652\n1.850000\n0.90\n\n\nAttachment_Anxiety\n3.273504\n2.888889\n1.2518426\n4.222222\n0.94\n\n\nSelf_Esteem\n2.215385\n2.100000\n0.4180234\n1.500000\n0.85\n\n\n\n\n\nAmong male participants, the mean social interaction anxiety score was2.21 , the mean attachment anxiety score was 3.27, and the mean self-esteem score was 2.22."
+  }
+]
